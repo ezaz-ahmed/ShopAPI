@@ -18,7 +18,8 @@ model Author {
   updatedAt DateTime @updatedAt
 
   name            String
-  phantomWallet   String  @unique
+  nonce           String
+  walletAddress   String  @unique
   stripeAccountId String?
   isOwner         Boolean @default(false)
   isVerified      Boolean @default(false)
