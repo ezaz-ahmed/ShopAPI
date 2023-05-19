@@ -10,12 +10,11 @@ export class AuthResolver {
 
   @Query(() => Auth, { name: 'login', nullable: true })
   login(@Args('walletAddress') walletAddress: string) {
-    console.log(walletAddress);
-    return null;
+    return this.authService.login(walletAddress);
   }
 
   @Mutation(() => Auth, { name: 'register', nullable: true })
   register(@Args('registerInput') registerInput: RegisterInput) {
-    return null;
+    return this.authService.register(registerInput);
   }
 }
