@@ -3,6 +3,7 @@ import { AuthorsService } from './authors.service';
 import { AuthorsResolver } from './authors.resolver';
 
 @Module({
-  providers: [AuthorsResolver, AuthorsService]
+  providers: [AuthorsResolver, AuthorsService],
+  exports: [AuthorsService],
 })
 export class AuthorsModule {}
