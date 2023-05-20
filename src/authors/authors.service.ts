@@ -12,6 +12,12 @@ export class AuthorsService {
       where: {
         walletAddress,
       },
+      select: {
+        id: true,
+        isOwner: true,
+        walletAddress: true,
+        isVerified: true,
+      },
     });
   }
 

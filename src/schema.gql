@@ -4,8 +4,7 @@
 
 """Author Model"""
 type Auth {
-  accessToken: String!
-  author: Author!
+  access_token: String!
 }
 
 """Author Model"""
@@ -43,7 +42,7 @@ input CreateBookInput {
 
 type Mutation {
   createBook(createBookInput: CreateBookInput!): Book!
-  register(registerInput: RegisterInput!): Auth
+  register(registerInput: RegisterInput!): Auth!
   removeBook(id: Int!): Book!
   updateBook(updateBookInput: UpdateBookInput!): Book!
 }
@@ -53,7 +52,7 @@ type Query {
   authors: [Author!]!
   book(id: Int!): Book!
   books: [Book!]!
-  login(walletAddress: String!): Auth
+  login(walletAddress: String!): Auth!
 }
 
 """Inputs to register a new author"""

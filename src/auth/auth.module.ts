@@ -5,7 +5,12 @@ import { AuthResolver } from './auth.resolver';
 import { AuthorsModule } from 'src/authors/authors.module';
 
 @Module({
-  imports: [AuthorsModule, JwtModule.register({})],
+  imports: [
+    AuthorsModule,
+    JwtModule.register({
+      global: true,
+    }),
+  ],
   providers: [AuthResolver, AuthService],
 })
 export class AuthModule {}

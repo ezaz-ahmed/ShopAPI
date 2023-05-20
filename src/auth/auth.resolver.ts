@@ -8,13 +8,16 @@ import { RegisterInput } from './dto';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Query(() => Auth, { name: 'login', nullable: true })
-  login(@Args('walletAddress') walletAddress: string) {
-    return this.authService.login(walletAddress);
+  @Query(() => Auth, { name: 'login' })
+  async login(@Args('walletAddress') walletAddress: string) {
+    console.log({ walletAddress });
+    let value = await this.authService.login(walletAddress);
+    console.log(value);
+    return value;
   }
 
-  @Mutation(() => Auth, { name: 'register', nullable: true })
-  register(@Args('registerInput') registerInput: RegisterInput) {
-    return this.authService.register(registerInput);
+  @Mutation(() => Auth, { name: 'register' })
+  async register(@Args('registerInput') registerInput: RegisterInput) {
+    return await this.authService.register(registerInput);
   }
 }
