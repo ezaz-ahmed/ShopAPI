@@ -7,7 +7,6 @@ export class Author {
   id: number;
 
   name: string;
-  nonce: string;
   walletAddress: string;
   stripeAccountId?: string;
   isOwner: boolean;

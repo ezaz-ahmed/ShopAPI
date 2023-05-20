@@ -7,8 +7,8 @@ export class AuthorsResolver {
   constructor(private readonly authorsService: AuthorsService) {}
 
   @Query(() => Author, { name: 'author' })
-  findOne(@Args('walletAddress') walletAddress: string) {
-    return this.authorsService.findOne(walletAddress);
+  findOne(@Args('publicAddress') publicAddress: string) {
+    return this.authorsService.findOne(publicAddress);
   }
 
   @Query(() => [Author], { name: 'authors' })

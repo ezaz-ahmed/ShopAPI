@@ -9,11 +9,8 @@ export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @Query(() => Auth, { name: 'login' })
-  async login(@Args('walletAddress') walletAddress: string) {
-    console.log({ walletAddress });
-    let value = await this.authService.login(walletAddress);
-    console.log(value);
-    return value;
+  async login(@Args('publicAddress') publicAddress: string) {
+    return await this.authService.login(publicAddress);
   }
 
   @Mutation(() => Auth, { name: 'register' })

@@ -7,15 +7,15 @@ import { ConfigService } from '@nestjs/config';
 export class AuthorsService {
   constructor(private prisma: PrismaService, private config: ConfigService) {}
 
-  findOne(walletAddress: string) {
+  findOne(publicAddress: string) {
     return this.prisma.author.findUnique({
       where: {
-        walletAddress,
+        publicAddress,
       },
       select: {
         id: true,
         isOwner: true,
-        walletAddress: true,
+        publicAddress: true,
         isVerified: true,
       },
     });

@@ -4,7 +4,7 @@ CREATE TABLE "Author" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
-    "phantomWallet" TEXT NOT NULL,
+    "publicAddress" TEXT NOT NULL,
     "stripeAccountId" TEXT,
     "isOwner" BOOLEAN NOT NULL DEFAULT false,
     "isVerified" BOOLEAN NOT NULL DEFAULT false,
@@ -28,7 +28,7 @@ CREATE TABLE "Book" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Author_phantomWallet_key" ON "Author"("phantomWallet");
+CREATE UNIQUE INDEX "Author_publicAddress_key" ON "Author"("publicAddress");
 
 -- AddForeignKey
 ALTER TABLE "Book" ADD CONSTRAINT "Book_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "Author"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

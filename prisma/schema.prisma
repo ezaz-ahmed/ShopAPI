@@ -18,8 +18,7 @@ model Author {
   updatedAt DateTime @updatedAt
 
   name            String
-  nonce           String
-  walletAddress   String  @unique
+  publicAddress   String  @unique
   stripeAccountId String?
   isOwner         Boolean @default(false)
   isVerified      Boolean @default(false)
