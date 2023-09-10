@@ -2,7 +2,7 @@ import { Schema, model, Document } from "mongoose"
 import bcrypt from "bcrypt"
 import config from 'config'
 
-interface IUser extends Document {
+export interface IUser extends Document {
   name: string
   email: string
   password: string
