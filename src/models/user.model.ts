@@ -8,7 +8,7 @@ export interface UserInput {
   password: string
 }
 
-interface IUser extends UserInput, Document {
+export interface IUser extends UserInput, Document {
   createdAt: Date
   updatedAt: Date
   comparePassword(candidatePassword: string): Promise<boolean>
