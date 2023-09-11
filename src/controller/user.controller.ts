@@ -9,7 +9,8 @@ export async function createUserHandler(
   res: Response
 ) {
   try {
-    return await createUser(req.body)
+    const user = await createUser(req.body)
+    return res.send(user)
   } catch (error: any) {
     logger.error(error)
     return res.status(409).send(error.messaeg)
