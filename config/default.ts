@@ -1,9 +1,9 @@
 export default {
   port: 1337,
-  dbUri: "mongodb+srv://db-user:Ihm6hbJOI0UwqKJn@craft.mjwg4lu.mongodb.net/?retryWrites=true&w=majority",
+  dbUri: "mongodb://localhost:27017/restful-api",
   saltWorkFactor: 10,
-  accessTokenTtl: '15m',
-  refreshTokenTtl: '7d',
+  accessTokenTtl: "15m",
+  refreshTokenTtl: "7d",
   publicKey: `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk/1YL73RNmJzn+DKEAqA
 agN9+g4D3DzJgjvAmSwvhDLItSN+T8mDbKOKCfVZ6NBIzPPtiy4/kzqeKCROJLJT
@@ -39,5 +39,5 @@ gCmDvPFxDifQdwfpxt999SfjgrNF3wfmwPH54P84N6fKQQjhw3Wu5D8jNeMonG9M
 9rplEwKBgQCBojNk0VvWhSuGmEPgOy2F2nEOLYAgCmW4lpe100i37EjpY29GbIek
 jZkT6IEgFkpGpEQy7Kqc8nu9NMWRwYO2jJemxUckpj3hclfePbawCI+L4b7/hBrV
 CUJU4qO6p5vKY7lfJtZ1Bvf0rAkIhCau2MPg2NgdecNIhgBh68OBYA==
------END RSA PRIVATE KEY-----`
-}
+-----END RSA PRIVATE KEY-----`,
+};
