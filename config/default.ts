@@ -2,7 +2,7 @@ export default {
   port: 1337,
   dbUri: "mongodb://localhost:27017/restful-api",
   saltWorkFactor: 10,
-  accessTokenTtl: "15m",
+  accessTokenTtl: "5s",
   refreshTokenTtl: "7d",
   publicKey: `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk/1YL73RNmJzn+DKEAqA
