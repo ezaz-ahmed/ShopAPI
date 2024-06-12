@@ -1,15 +1,21 @@
-import { FilterQuery, UpdateQuery, QueryOptions, FlattenMaps } from "mongoose";
-import ProductModel, { IProduct } from "../models/product.model";
+import { FilterQuery, UpdateQuery, QueryOptions } from "mongoose";
+import ProductModel, { IProduct, ProductInput } from "../models/product.model";
 
-export async function createProduct(
-  input: Omit<IProduct, "createdAt" | "updatedAt">
-) {
+export async function createProduct(input: ProductInput) {
+  console.log(
+    input.title,
+    input.price,
+    input.description,
+    input.image,
+    input.user
+  );
+
   const product = await ProductModel.create(input);
   return product.toJSON();
 }
 
 export async function findProduct(query: FilterQuery<IProduct>) {
-  return ProductModel.find(query).lean();
+  return await ProductModel.find(query).lean();
 }
 
 export async function findAndUpdateProduct(

@@ -12,14 +12,14 @@ import {
   GetProductInput,
   UpdateProductInput,
 } from "../schema/product.schema";
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 
 export async function createProductHandler(
   req: Request<{}, {}, CreateProductInput["body"]>,
   res: Response
 ) {
   try {
-    const userId = res.locals.user._id as ObjectId;
+    const userId = res.locals.user._id as Types.ObjectId;
     const body = req.body;
 
     const product = await createProduct({ ...body, user: userId });
@@ -34,7 +34,14 @@ export async function getProductHandler(
   res: Response
 ) {
   try {
-    const product = await findProduct(req.body);
+    const productId = req.params.productId;
+
+    const product = await findProduct({ productId });
+
+    if (!product) {
+      return res.sendStatus(404);
+    }
+
     return res.send(product);
   } catch (error: any) {
     logger.error(error);
@@ -47,8 +54,25 @@ export async function updateProductHandler(
   res: Response
 ) {
   try {
-    const product = await findAndUpdateProduct(req.body);
-    return res.send(product);
+    const userId = res.locals.user._id as Types.ObjectId;
+    const productId = req.params.productId;
+    const update = req.body;
+
+    const product = await findProduct({ productId });
+
+    if (!product) {
+      return res.sendStatus(404);
+    }
+
+    if (product.user !== userId) {
+      return res.sendStatus(403);
+    }
+
+    const updatedProdct = await findAndUpdateProduct({ productId }, update, {
+      new: true,
+    });
+
+    return res.send(updatedProdct);
   } catch (error: any) {
     logger.error(error);
     return res.status(409).send(error.messaeg);
@@ -60,8 +84,22 @@ export async function deleteProductHandler(
   res: Response
 ) {
   try {
-    const product = await findAndDeleteProduct(req.body);
-    return res.send(product);
+    const userId = res.locals.user._id as Types.ObjectId;
+    const productId = req.params.productId;
+
+    const product = await findProduct({ productId });
+
+    if (!product) {
+      return res.sendStatus(404);
+    }
+
+    if (!product.user.equals(userId)) {
+      return res.sendStatus(403);
+    }
+
+    await findAndDeleteProduct({ productId });
+
+    res.sendStatus(200);
   } catch (error: any) {
     logger.error(error);
     return res.status(409).send(error.messaeg);

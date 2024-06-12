@@ -8,8 +8,8 @@ export const productPayload = object({
   description: string({
     required_error: "Description is required",
   }).min(120, "Description should be at least 120 characters long"),
-  amount: number({
-    required_error: "Amount is required",
+  price: number({
+    required_error: "Price is required",
   }),
   image: string({
     required_error: "Product Image is required",
