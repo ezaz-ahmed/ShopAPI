@@ -1,11 +1,10 @@
-import { Document, Schema, model } from "mongoose";
+import { Document, Schema, Types, model } from "mongoose";
 import { customAlphabet } from "nanoid";
-import { IUser } from "./user.model";
 
 const nanoid = customAlphabet("abcdefghifjklmnopqrstuvwxyz0123456789", 10);
 
 export interface IProduct extends Document {
-  user: IUser["_id"];
+  user: Types.ObjectId;
   title: string;
   description: string;
   price: number;
@@ -14,7 +13,7 @@ export interface IProduct extends Document {
   updatedAt: Date;
 }
 
-const sessionSchema = new Schema(
+const productSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -24,14 +23,23 @@ const sessionSchema = new Schema(
       type: String,
       requried: true,
       unique: true,
-      default: () => `product_${nanoid}`,
+      default: () => `product_${nanoid()}`,
     },
     title: {
       type: String,
-      default: true,
+      requried: true,
     },
     description: {
       type: String,
+      requried: true,
+    },
+    price: {
+      type: Number,
+      requried: true,
+    },
+    image: {
+      type: String,
+      requried: true,
     },
   },
   {
@@ -39,6 +47,6 @@ const sessionSchema = new Schema(
   }
 );
 
-const SessionModel = model<IProduct>("Session", sessionSchema);
+const ProductModel = model<IProduct>("Product", productSchema);
 
-export default SessionModel;
+export default ProductModel;
