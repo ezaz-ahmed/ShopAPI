@@ -1,6 +1,5 @@
 import { object, string, number, TypeOf } from "zod";
 
-// Define the payload schema
 export const productPayload = object({
   title: string({
     required_error: "Title is required",
@@ -16,14 +15,12 @@ export const productPayload = object({
   }),
 });
 
-// Define the params schema
 const productParams = object({
   productId: string({
     required_error: "Product id is required",
   }),
 });
 
-// Combine schemas for different operations
 export const createProductSchema = object({
   body: productPayload,
 });
