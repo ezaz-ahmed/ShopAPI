@@ -10,7 +10,12 @@ import {
 import { createSessionSchema } from "../schema/session.schema";
 import requireUser from "../middleware/requireUser";
 import { createProductSchema } from "../schema/product.schema";
-import { createProductHandler } from "../controller/product.controller";
+import {
+  createProductHandler,
+  deleteProductHandler,
+  getProductHandler,
+  updateProductHandler,
+} from "../controller/product.controller";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
@@ -28,6 +33,13 @@ function routes(app: Express) {
     [requireUser, validateResource(createProductSchema)],
     createProductHandler
   );
+  app.get("/api/products/:productId", getProductHandler);
+  app.put(
+    "/api/products/:productId",
+    [requireUser, validateResource(createProductSchema)],
+    updateProductHandler
+  );
+  app.delete("/api/products/:productId", requireUser, deleteProductHandler);
 }
 
 export default routes;

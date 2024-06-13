@@ -1,14 +1,9 @@
 import { FilterQuery, UpdateQuery, QueryOptions } from "mongoose";
 import ProductModel, { IProduct, ProductInput } from "../models/product.model";
+import logger from "../utils/logger";
 
 export async function createProduct(input: ProductInput) {
-  console.log(
-    input.title,
-    input.price,
-    input.description,
-    input.image,
-    input.user
-  );
+  logger.warn({ input });
 
   const product = await ProductModel.create(input);
   return product.toJSON();
@@ -23,7 +18,7 @@ export async function findAndUpdateProduct(
   update: UpdateQuery<IProduct>,
   options: QueryOptions
 ) {
-  return ProductModel.findOneAndUpdate(query, update, options);
+  return await ProductModel.findOneAndUpdate(query, update, options);
 }
 
 export async function findAndDeleteProduct(query: FilterQuery<IProduct>) {

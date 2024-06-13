@@ -36,12 +36,13 @@ export async function getProductHandler(
   try {
     const productId = req.params.productId;
 
-    const product = await findProduct({ productId });
+    const products = await findProduct({ _id: productId });
+
+    const product = products[0];
 
     if (!product) {
       return res.sendStatus(404);
     }
-
     return res.send(product);
   } catch (error: any) {
     logger.error(error);
@@ -54,23 +55,29 @@ export async function updateProductHandler(
   res: Response
 ) {
   try {
-    const userId = res.locals.user._id as Types.ObjectId;
+    const userId = res.locals.user._id;
     const productId = req.params.productId;
     const update = req.body;
 
-    const product = await findProduct({ productId });
+    const products = await findProduct({ _id: productId });
+
+    const product = products[0];
 
     if (!product) {
       return res.sendStatus(404);
     }
 
-    if (product.user !== userId) {
+    if (product.user.toString() !== userId) {
       return res.sendStatus(403);
     }
 
-    const updatedProdct = await findAndUpdateProduct({ productId }, update, {
-      new: true,
-    });
+    const updatedProdct = await findAndUpdateProduct(
+      { _id: productId },
+      update,
+      {
+        new: true,
+      }
+    );
 
     return res.send(updatedProdct);
   } catch (error: any) {
@@ -84,10 +91,11 @@ export async function deleteProductHandler(
   res: Response
 ) {
   try {
-    const userId = res.locals.user._id as Types.ObjectId;
+    const userId = res.locals.user._id;
     const productId = req.params.productId;
 
-    const product = await findProduct({ productId });
+    const products = await findProduct({ _id: productId });
+    const product = products[0];
 
     if (!product) {
       return res.sendStatus(404);
@@ -97,7 +105,7 @@ export async function deleteProductHandler(
       return res.sendStatus(403);
     }
 
-    await findAndDeleteProduct({ productId });
+    await findAndDeleteProduct({ _id: productId });
 
     res.sendStatus(200);
   } catch (error: any) {
