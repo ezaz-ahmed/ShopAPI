@@ -13,7 +13,7 @@ const userPayload = {
   name: "John Doe",
 };
 
-const user = {
+const userInput = {
   email: "johndoe@example.com",
   name: "John Doe",
   password: "password123",
@@ -27,18 +27,48 @@ describe("user", () => {
       it("should return the user payload", async () => {
         const createUserServiceMock = jest
           .spyOn(UserService, "createUser")
+          // @ts-ignore
           .mockReturnValueOnce(userPayload);
 
-        const {} = await supertest(app).post("/api/users");
+        const { statusCode, body } = await supertest(app)
+          .post("/api/users")
+          .send(userInput);
+
+        expect(statusCode).toBe(200);
+        expect(body).toEqual(userPayload);
+        expect(createUserServiceMock).toHaveBeenCalledWith(userInput);
       });
     });
 
     describe("given the password do not match", () => {
-      it("should return a 400", () => {});
+      it("should return a 400", async () => {
+        const createUserServiceMock = jest
+          .spyOn(UserService, "createUser")
+          // @ts-ignore
+          .mockReturnValueOnce(userPayload);
+
+        const { statusCode } = await supertest(app)
+          .post("/api/users")
+          .send({ ...userInput, confirmPassword: "password456" });
+
+        expect(statusCode).toBe(400);
+        expect(createUserServiceMock).not.toHaveBeenCalled();
+      });
     });
 
     describe("given the user service throws", () => {
-      it("should return a 409 error", () => {});
+      it("should return a 409 error", async () => {
+        const createUserServiceMock = jest
+          .spyOn(UserService, "createUser")
+          .mockRejectedValue("oh no :(");
+
+        const { statusCode } = await supertest(app)
+          .post("/api/users")
+          .send(userInput);
+
+        expect(statusCode).toBe(409);
+        expect(createUserServiceMock).toHaveBeenCalled();
+      });
     });
   });
 
