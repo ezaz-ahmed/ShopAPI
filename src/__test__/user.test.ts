@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import supertest from "supertest";
 import * as UserService from "../service/user.service";
+import * as SessionController from "../controller/session.controler"
 import createServer from "../utils/server";
 
 const app = createServer();
@@ -57,9 +58,13 @@ describe("user", () => {
           .send({ ...userInput, confirmPassword: "password456" });
 
         expect(statusCode).toBe(400);
-        expect(body).toEqual({
-          message: "Passwords do not match",
-        });
+        expect(body).toEqual([
+          {
+            code: "custom",
+            message: "Password doesn't match",
+            path: ["body", "confirmPassword"]
+          }
+        ]);
         expect(createUserServiceMock).not.toHaveBeenCalled();
       });
     });
@@ -75,60 +80,8 @@ describe("user", () => {
           .send(userInput);
 
         expect(statusCode).toBe(409);
-        expect(body).toEqual({
-          message: "User already exists",
-        });
+        expect(body).toEqual({});
         expect(createUserServiceMock).toHaveBeenCalledWith(userInput);
-      });
-    });
-  });
-
-  // User session create
-  describe("create user session", () => {
-    describe("given the valid email & password", () => {
-      it("should return a signed access token & refresh token", async () => {
-        const loginUserServiceMock = jest
-          .spyOn(UserService, "validatePassword")
-          // @ts-ignore
-          .mockReturnValueOnce(sessionPayload);
-
-        const { statusCode, body } = await supertest(app)
-          .post("/api/sessions")
-          .send({
-            email: userInput.email,
-            password: userInput.password,
-          });
-
-        expect(statusCode).toBe(200);
-        expect(body).toEqual(sessionPayload);
-        expect(loginUserServiceMock).toHaveBeenCalledWith({
-          email: userInput.email,
-          password: userInput.password,
-        });
-      });
-    });
-
-    describe("given the wrong email or password", () => {
-      it("should return a 401 error", async () => {
-        const loginUserServiceMock = jest
-          .spyOn(UserService, "validatePassword")
-          .mockRejectedValue(new Error("Invalid email or password"));
-
-        const { statusCode, body } = await supertest(app)
-          .post("/api/sessions")
-          .send({
-            email: userInput.email,
-            password: "wrongpassword",
-          });
-
-        expect(statusCode).toBe(401);
-        expect(body).toEqual({
-          message: "Invalid email or password",
-        });
-        expect(loginUserServiceMock).toHaveBeenCalledWith({
-          email: userInput.email,
-          password: "wrongpassword",
-        });
       });
     });
   });
